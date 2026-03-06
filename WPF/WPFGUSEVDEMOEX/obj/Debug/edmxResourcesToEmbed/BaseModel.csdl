@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DemoExamModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Partners_import_">
+    <Key>
+      <PropertyRef Name="type_partner_ID" />
+    </Key>
+    <Property Name="type_partner_ID" Type="Int32" Nullable="false" />
+    <Property Name="type_partner" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="name_partner" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="director_partners" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="email_partners" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="number_partners" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="adress_partners" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="INN_partners" Type="Double" />
+    <Property Name="raring_partners" Type="Double" />
+    <NavigationProperty Name="Partners_product_import_" Relationship="Self.FK_Partners_product_import__Partners_import_" FromRole="Partners_import_" ToRole="Partners_product_import_" />
+  </EntityType>
+  <EntityType Name="Partners_product_import_">
+    <Key>
+      <PropertyRef Name="partner_products_import_ID" />
+    </Key>
+    <Property Name="partner_products_import_ID" Type="Int32" Nullable="false" />
+    <Property Name="Products_import_name" Type="Int32" />
+    <Property Name="Name_partner_import" Type="Int32" />
+    <Property Name="quantity_import" Type="Int32" />
+    <Property Name="Date_import" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Partners_import_" Relationship="Self.FK_Partners_product_import__Partners_import_" FromRole="Partners_product_import_" ToRole="Partners_import_" />
+    <NavigationProperty Name="Product_import_" Relationship="Self.FK_Partners_product_import__Product_import_" FromRole="Partners_product_import_" ToRole="Product_import_" />
+  </EntityType>
+  <EntityType Name="Product_import_">
+    <Key>
+      <PropertyRef Name="type_products_ID" />
+    </Key>
+    <Property Name="type_products_ID" Type="Int32" Nullable="false" />
+    <Property Name="type_products" Type="Int32" />
+    <Property Name="name_products" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="articul_products" Type="Int32" />
+    <Property Name="minprice_products" Type="Int32" />
+    <NavigationProperty Name="Partners_product_import_" Relationship="Self.FK_Partners_product_import__Product_import_" FromRole="Product_import_" ToRole="Partners_product_import_" />
+    <NavigationProperty Name="Product_type_import_" Relationship="Self.FK_Product_import__Product_type_import_" FromRole="Product_import_" ToRole="Product_type_import_" />
+  </EntityType>
+  <EntityType Name="Product_type_import_">
+    <Key>
+      <PropertyRef Name="type_product_import_ID" />
+    </Key>
+    <Property Name="type_product_import_ID" Type="Int32" Nullable="false" />
+    <Property Name="type_product_import_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="kafe_type_product_import" Type="Int32" />
+    <NavigationProperty Name="Product_import_" Relationship="Self.FK_Product_import__Product_type_import_" FromRole="Product_type_import_" ToRole="Product_import_" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_Partners_product_import__Partners_import_">
+    <End Role="Partners_import_" Type="Self.Partners_import_" Multiplicity="0..1" />
+    <End Role="Partners_product_import_" Type="Self.Partners_product_import_" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Partners_import_">
+        <PropertyRef Name="type_partner_ID" />
+      </Principal>
+      <Dependent Role="Partners_product_import_">
+        <PropertyRef Name="Name_partner_import" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Partners_product_import__Product_import_">
+    <End Role="Product_import_" Type="Self.Product_import_" Multiplicity="0..1" />
+    <End Role="Partners_product_import_" Type="Self.Partners_product_import_" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product_import_">
+        <PropertyRef Name="type_products_ID" />
+      </Principal>
+      <Dependent Role="Partners_product_import_">
+        <PropertyRef Name="Products_import_name" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_import__Product_type_import_">
+    <End Role="Product_type_import_" Type="Self.Product_type_import_" Multiplicity="0..1" />
+    <End Role="Product_import_" Type="Self.Product_import_" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product_type_import_">
+        <PropertyRef Name="type_product_import_ID" />
+      </Principal>
+      <Dependent Role="Product_import_">
+        <PropertyRef Name="type_products" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DemoExamEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Partners_import_" EntityType="Self.Partners_import_" />
+    <EntitySet Name="Partners_product_import_" EntityType="Self.Partners_product_import_" />
+    <EntitySet Name="Product_import_" EntityType="Self.Product_import_" />
+    <EntitySet Name="Product_type_import_" EntityType="Self.Product_type_import_" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <AssociationSet Name="FK_Partners_product_import__Partners_import_" Association="Self.FK_Partners_product_import__Partners_import_">
+      <End Role="Partners_import_" EntitySet="Partners_import_" />
+      <End Role="Partners_product_import_" EntitySet="Partners_product_import_" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Partners_product_import__Product_import_" Association="Self.FK_Partners_product_import__Product_import_">
+      <End Role="Product_import_" EntitySet="Product_import_" />
+      <End Role="Partners_product_import_" EntitySet="Partners_product_import_" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_import__Product_type_import_" Association="Self.FK_Product_import__Product_type_import_">
+      <End Role="Product_type_import_" EntitySet="Product_type_import_" />
+      <End Role="Product_import_" EntitySet="Product_import_" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
